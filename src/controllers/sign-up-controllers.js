@@ -34,9 +34,17 @@ class SignUpController {
             password,
             Number(process.env.PASSWORD_SALT)
         )
+        const expiration = new Date()
+        expiration.setDate(expiration.getDate() + 1)
 
         // add to pending registration
-        await pendingRegModel.insertUser(email, username, hashedPassword, token)
+        await pendingRegModel.insertUser(
+            email,
+            username,
+            hashedPassword,
+            token,
+            expiration
+        )
 
         // send email
 

@@ -15,10 +15,10 @@ class PendingRegistrationModel {
         return false
     }
 
-    async insertUser(email, username, password, verificationToken) {
+    async insertUser(email, username, password, verificationToken, expiration) {
         await pool.query(
-            `INSERT INTO "pending_registration" (email, username, password, verification_token) VALUES ($1, $2, $3, $4)`,
-            [email, username, password, verificationToken]
+            `INSERT INTO "pending_registration" (email, username, password, verification_token, verification_expiration) VALUES ($1, $2, $3, $4, $5)`,
+            [email, username, password, verificationToken, expiration]
         )
     }
 }
