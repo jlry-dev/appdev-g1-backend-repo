@@ -15,7 +15,7 @@ async function emailSender(recieverEmail, username, token, expiration) {
             template: process.env.COURIER_TEMPLATE,
             data: {
                 username: username,
-                verification_url: `${process.env.SERVER_PROTOCOL}://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/verify?token=${token}`,
+                verification_url: `${process.env.SERVER_BASE_URL}/verify?token=${token}`,
                 expire_date: expiration,
             },
             routing: {
