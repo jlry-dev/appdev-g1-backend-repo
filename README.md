@@ -30,17 +30,26 @@ File structure:
 ```
 
 # Environment variables
+
 ```
-SERVER_HOST
-SERVER_PORT
-SERVER_PROTOCOL
+SERVER_BASE_URL
+
 COURIER_AUTH_KEY
 COURIER_TEMPLATE
+
+DB_CONNECTION_STRING
+
+PASSWORD_SALT
+
+JWT_SECRET
+
+<!--
+# Dev variables (db connection pool)
 DB_HOST
 DB_NAME
 DB_USER
 DB_PORT
 DB_PASSWORD
-PASSWORD_SALT
-JWT_SECRET
+-->
+
 ```
