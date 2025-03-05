@@ -1,6 +1,7 @@
 const pool = require('../config/database')
 
 class PendingRegistrationModel {
+    // Check if a user credential is on pending registration.
     async checkPending(email, username) {
         const { rows } = await pool.query(
             'SELECT * FROM "pending_registration" WHERE email = $1 OR username = $2',
@@ -8,7 +9,21 @@ class PendingRegistrationModel {
         )
 
         if (rows.length > 0) {
-            // user is pending for verification
+            return true
+        }
+
+        return false
+    }
+
+    // Check if a user credential is on pending.
+    // Returns a boolean if token matches in the database or not
+    async checkPendingByToken(token) {
+        const { rows } = await pool.query(
+            `SELECT * FROM pending_registration WHERE verification_token = $1`,
+            [token]
+        )
+
+        if (rows.length > 0) {
             return true
         }
 
@@ -19,6 +34,24 @@ class PendingRegistrationModel {
         await pool.query(
             `INSERT INTO "pending_registration" (email, username, password, verification_token, verification_expiration) VALUES ($1, $2, $3, $4, $5)`,
             [email, username, password, verificationToken, expiration]
+        )
+    }
+
+    async retrieveUserByToken(token) {
+        const { rows } = await pool.query(
+            `SELECT * FROM pending_registration WHERE verification_token = $1`,
+            [token]
+        )
+
+        const user = rows[0]
+
+        return user
+    }
+
+    async deleteUserByToken(token) {
+        await pool.query(
+            `DELETE FROM pending_registration WHERE verification_token = $1`,
+            [token]
         )
     }
 }

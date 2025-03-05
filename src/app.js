@@ -9,6 +9,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/sign-up', routes.signUpRouter)
+app.use('/verify', routes.verifyRouter)
 
 app.use(errorMiddleware)
 

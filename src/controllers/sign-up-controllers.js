@@ -7,6 +7,7 @@ require('dotenv').config()
 const pendingRegModel = require('../models/pending-regesiter-model')
 const ConflictError = require('../errors/conflict-error')
 const BadRequestError = require('../errors/bad-request-error')
+const emailSender = require('../lib/email-sender')
 
 class SignUpController {
     postSignUp = asyncHandler(async (req, res) => {
@@ -46,7 +47,8 @@ class SignUpController {
             expiration
         )
 
-        // send email
+        // Send verification email
+        await emailSender(email, username, token, expiration)
 
         // return 202 OK
         res.status(202)
