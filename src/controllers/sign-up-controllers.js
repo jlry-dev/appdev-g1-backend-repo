@@ -5,6 +5,7 @@ const asyncHandler = require('express-async-handler')
 require('dotenv').config()
 
 const pendingRegModel = require('../models/pending-regesiter-model')
+const usersModel = require('../models/users-model')
 const ConflictError = require('../errors/conflict-error')
 const BadRequestError = require('../errors/bad-request-error')
 const emailSender = require('../lib/email-sender')
@@ -23,10 +24,15 @@ class SignUpController {
         const { email, username, password } = req.body
 
         const isPending = await pendingRegModel.checkPending(email, username)
+        const isRegistered = await usersModel.checkUser(email, username)
 
+        // return 409 conflict already pending or already registered.
         if (isPending) {
-            // return 409 conflict already pending
-            throw new ConflictError('User is already pending for verification.')
+            throw new ConflictError(
+                'Username or email is already pending for verification.'
+            )
+        } else if (isRegistered) {
+            throw new ConflictError('Username or email is already registered.')
         }
 
         // create a verification token
