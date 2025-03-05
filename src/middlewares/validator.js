@@ -1,8 +1,8 @@
 const { body } = require('express-validator')
-const { sign } = require('jsonwebtoken')
 
 const validator = (() => {
     const signUp = [
+        // No leading or trailing whitespace for username
         body('username')
             .trim()
             .notEmpty()
@@ -17,11 +17,12 @@ const validator = (() => {
             .withMessage('Email must not be empty')
             .isEmail()
             .withMessage('Invalid email'),
-        // Passwors should not contain trailing and leading whitespaces
+        // Passwors should not contain trailing or leading whitespaces
         body('password')
             .trim()
             .notEmpty()
-            .withMessage('Password must not be empty'),
+            .withMessage('Password must not be empty')
+            .isLength({ min: 8, max: 64 }),
         body('confirm-password')
             .trim()
             .custom((value, { req }) => {
@@ -34,7 +35,23 @@ const validator = (() => {
             .withMessage('Password does not match'),
     ]
 
-    return { signUp }
+    const logIn = [
+        body('username')
+            .trim()
+            .notEmpty()
+            .withMessage('Username must not be empty')
+            .isAlphanumeric()
+            .withMessage('Username should be alphanumeric only')
+            .isLength({ min: 3, max: 30 })
+            .withMessage('Length must be between 3 and 30'),
+        body('password')
+            .trim()
+            .notEmpty()
+            .withMessage('Password must not be empty')
+            .isLength({ min: 8, max: 64 }),
+    ]
+
+    return { signUp, logIn }
 })()
 
 module.exports = validator
