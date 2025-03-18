@@ -2,7 +2,7 @@ const { Router } = require('express')
 
 const controller = require('../controllers/log-in-controllers')
 const validator = require('../middlewares/validator')
-const verifyToken = require('./middlewares/jwt-verifier-middleware')
+const verifyToken = require('../middlewares/jwt-verifier-middleware')
 
 const logInRouter = Router()
 
