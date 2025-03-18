@@ -9,10 +9,10 @@ const logInRouter = Router()
 // path prefix "/log-in"
 
 logInRouter.post('/', validator.logIn, controller.postLogIn)
-logInRouter.post('/verify', verifyToken, (req, res) => 
+logInRouter.post('/verify', verifyToken, (req, res) => {
     res.status(200).json({
       status: "success",
     })
-  }
+  })
 
 module.exports = logInRouter
