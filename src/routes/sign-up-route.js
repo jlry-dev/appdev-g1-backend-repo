@@ -8,5 +8,6 @@ const signUpRouter = Router()
 // path prefix "/sign-up"
 
 signUpRouter.post('/', validator.signUp, controller.postSignUp) // Verify the data first
+signUpRouter.get('/verify', controller.verifyTokenByQuery)
 
 module.exports = signUpRouter

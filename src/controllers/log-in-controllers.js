@@ -49,6 +49,12 @@ class LogInController {
             status: 'success',
         })
     })
+
+    verifyLogInToken(req, res) {
+        res.status(200).json({
+            status: 'success',
+        })
+    }
 }
 
 module.exports = new LogInController()
