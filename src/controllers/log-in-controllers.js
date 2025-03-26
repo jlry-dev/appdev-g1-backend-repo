@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const emailValidator = require('email-validator')
 const asyncHandler = require('express-async-handler')
 require('dotenv').config()
 
@@ -16,19 +17,23 @@ class LogInController {
             throw new BadRequestError('Data sent is invalid.')
         }
 
-        const { username, password } = req.body
+        const { userIdentifier, password } = req.body
 
-        const user = await usersModel.retrieveUserByUsername(username)
+        // The userIndetifier variable holds either a username or email of the user
+        // This ternary operation validates if it is an email, if so, will query database by email, otherwise by username.
+        const user = emailValidator.validate(userIdentifier)
+            ? await usersModel.retrieveUserByEmail(userIdentifier)
+            : await usersModel.retrieveUserByUsername(userIdentifier)
 
         if (typeof user === 'undefined') {
-            throw new UnauthorizedError('Invalid username or password.')
+            throw new UnauthorizedError('Invalid credentials.')
         }
 
         // check if password is matched
         const isMatched = await bcrypt.compare(password, user.password)
 
         if (!isMatched) {
-            throw new UnauthorizedError('Invalid username or password')
+            throw new UnauthorizedError('Invalid credentials.')
         }
 
         // Generate JWT

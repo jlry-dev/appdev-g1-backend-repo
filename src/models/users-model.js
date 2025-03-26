@@ -32,6 +32,17 @@ class UsersModel {
 
         return user
     }
+
+    async retrieveUserByEmail(email) {
+        const { rows } = await pool.query(
+            `SELECT * FROM users WHERE email = $1`,
+            [email]
+        )
+
+        const user = rows[0]
+
+        return user
+    }
 }
 
 module.exports = new UsersModel()

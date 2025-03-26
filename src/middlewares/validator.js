@@ -1,3 +1,4 @@
+const emailValidator = require('email-validator')
 const { body } = require('express-validator')
 
 const validator = (() => {
@@ -35,21 +36,38 @@ const validator = (() => {
             .withMessage('Password does not match'),
     ]
 
-    const logIn = [
-        body('username')
+    const logIn = (req, res, next) => {
+        const { userIdentifier } = req.body
+
+        if (emailValidator.validate(userIdentifier)) {
+            // REF: redundant? Need refactor.
+            body('userIdentifier')
+                .trim()
+                .notEmpty()
+                .withMessage('Email must not be empty')
+                .isEmail()
+                .withMessage('Invalid email')
+
+            return next()
+        }
+
+        body('userIdentifier')
             .trim()
             .notEmpty()
             .withMessage('Username must not be empty')
             .isAlphanumeric()
             .withMessage('Username should be alphanumeric only')
             .isLength({ min: 3, max: 30 })
-            .withMessage('Length must be between 3 and 30'),
+            .withMessage('Length must be between 3 and 30')
+
         body('password')
             .trim()
             .notEmpty()
             .withMessage('Password must not be empty')
-            .isLength({ min: 8, max: 64 }),
-    ]
+            .isLength({ min: 8, max: 64 })
+
+        return next()
+    }
 
     return { signUp, logIn }
 })()
