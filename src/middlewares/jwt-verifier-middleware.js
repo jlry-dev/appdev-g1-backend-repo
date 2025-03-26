@@ -9,8 +9,6 @@ function verifyToken(req, res, next) {
 
     const authHeader = req.header('Authorization')
 
-    console.log(authHeader)
-
     if (typeof authHeader === 'undefined') {
         throw new UnauthorizedError(
             'Missing authorization header. Provide a valid token.'

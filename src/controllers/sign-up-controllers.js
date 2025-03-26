@@ -18,7 +18,6 @@ class SignUpController {
         const validationErrs = validationResult(req).errors
 
         if (validationErrs.length > 0) {
-            console.log(validationErrs)
             // return 400 if missing shiz or invalid
             throw new BadRequestError('Data sent is invalid')
         }
