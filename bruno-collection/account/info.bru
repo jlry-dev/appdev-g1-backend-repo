@@ -1,0 +1,15 @@
+meta {
+  name: Get Account Info
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:3000/account/info
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJlbWFpbCI6InBlcnNvbmFsLmpscnlAZ21haWwuY29tIiwiaWF0IjoxNzQ3NTEyNjc3LCJleHAiOjE3NDc1OTkwNzd9.OkJUE2vqj-RKLXdNBTFRaV-X3lsFg0AfXlCdbwcL3jY
+}

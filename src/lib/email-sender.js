@@ -1,33 +1,34 @@
-const { CourierClient } = require('@trycourier/courier')
+require('dotenv').config();
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 
-require('dotenv').config()
+async function emailSender(receiverEmail, username, token, expiration) {
+  // Configure API key authorization
+  const defaultClient = SibApiV3Sdk.ApiClient.instance;
+  const apiKey = defaultClient.authentications['api-key'];
+  apiKey.apiKey = process.env.BREVO_API_KEY;
 
-const courier = new CourierClient({
-    authorizationToken: process.env.COURIER_AUTH_KEY,
-})
+  // Create API instance
+  const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-async function emailSender(recieverEmail, username, token, expiration) {
-    const { requestId } = await courier.send({
-        message: {
-            to: {
-                email: recieverEmail,
-            },
-            template: process.env.COURIER_TEMPLATE,
-            data: {
-                username: username,
-                verification_url: `${
-                    process.env.SIGNUP_VERIFICATION_ROUTE
-                }?token=${encodeURIComponent(token)}`,
-                expire_date: expiration,
-            },
-            routing: {
-                method: 'single',
-                channels: ['email'],
-            },
-        },
-    })
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+  
+  // Set up email data
+  sendSmtpEmail.to = [{ email: receiverEmail, name: username }];
+  sendSmtpEmail.templateId = parseInt(process.env.BREVO_TEMPLATE_ID);
+  sendSmtpEmail.params = {
+    username: username,
+    expiration: expiration,
+    verificationLink: `${process.env.SIGNUP_VERIFICATION_ROUTE}?token=${encodeURIComponent(token)}`
+  };
 
-    return requestId
+  try {
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log('✅ Email sent successfully');
+    return data;
+  } catch (error) {
+    console.error('❌ Error sending email:', error);
+    throw error;
+  }
 }
 
-module.exports = emailSender
+module.exports = emailSender;

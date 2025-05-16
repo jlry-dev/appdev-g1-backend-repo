@@ -1,0 +1,23 @@
+meta {
+  name: Update Account Info
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:3000/account/info/update
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSIsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJlbWFpbCI6InBlcnNvbmFsLmpscnlAZ21haWwuY29tIiwiaWF0IjoxNzQ3NTEyNjc3LCJleHAiOjE3NDc1OTkwNzd9.OkJUE2vqj-RKLXdNBTFRaV-X3lsFg0AfXlCdbwcL3jY
+}
+
+body:json {
+  {
+    "username": "newusername",
+    "email": "newemail@example.com",
+    "bdate": "2008-01-01"
+  }
+}

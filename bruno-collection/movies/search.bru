@@ -1,0 +1,13 @@
+meta {
+  name: Search Movies
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:3000/movies/search
+  query: {
+    query: "avengers"
+  }
+  auth: bearer
+} 
