@@ -23,7 +23,7 @@ class SignUpController {
         }
 
         // parse data
-        const { email, username, password } = req.body
+        const { email, username, bdate, password } = req.body
 
         const isPending = await pendingRegModel.checkPending(email, username)
         const isRegistered = await usersModel.checkUser(email, username)
@@ -50,6 +50,7 @@ class SignUpController {
         await pendingRegModel.insertUser(
             email,
             username,
+            bdate,
             hashedPassword,
             token,
             expiration
@@ -87,7 +88,7 @@ class SignUpController {
             throw new NotFoundError('Token was valid, user not found.')
         }
 
-        await usersModel.insertUser(user.email, user.username, user.password)
+        await usersModel.insertUser(user.email, user.username, user.bdate, user.password)
         await pendingRegModel.deleteUserByToken(token)
 
         res.status(200)

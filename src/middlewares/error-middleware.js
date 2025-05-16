@@ -1,3 +1,4 @@
+// The error will be redirected and handles here
 function errorHandler(err, req, res, next) {
     console.log(err)
 

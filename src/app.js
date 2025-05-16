@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/sign-up', routes.signUpRouter)
 app.use('/log-in', routes.loginRouter)
+app.use('/movies', routes.moviesRouter)
 
 app.get('/test/protected', verifyToken, (req, res) => {
     res.json({
