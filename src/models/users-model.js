@@ -15,10 +15,10 @@ class UsersModel {
         return false
     }
 
-    async insertUser(email, username, password) {
+    async insertUser(email, username, bdate, password) {
         await pool.query(
-            `INSERT INTO "users" (email, username, password) VALUES ($1, $2, $3)`,
-            [email, username, password]
+            `INSERT INTO "users" (email, username, bdate, password) VALUES ($1, $2, $3, $4)`,
+            [email, username, bdate, password]
         )
     }
 
@@ -32,6 +32,49 @@ class UsersModel {
 
         return user
     }
+
+
+    async retrieveUserByID(userID) {
+        const { rows } = await pool.query(
+            `SELECT * FROM users WHERE "user_id" = $1`,
+            [userID]
+        )
+
+        const user = rows[0]
+
+        return user
+    }
+
+    async retrieveUserByEmail(email) {
+        const { rows } = await pool.query(
+            `SELECT * FROM users WHERE email = $1`,
+            [email]
+        )
+
+        const user = rows[0]
+
+        return user
+    }
+
+    async updatePassword(newPassword, userID) {
+        await pool.query(`UPDATE users SET password = $1 WHERE "user_id" = $2`,
+            [newPassword, userID]
+        )
+    }
+
+    // This is for updating the username, email, and date (MM-DD-YYYY)
+    async updateInfo(username, email, bdate, isVerified, userID) {
+        await pool.query(`UPDATE users SET username = $1, email = $2, bdate = $3, "isVerified" = $4 WHERE "user_id" = $5`,
+            [username, email, bdate, isVerified, userID]
+        )
+    }
+
+    async deleteAccount(userID) {
+        await pool.query(`DELETE FROM users WHERE "user_id" = $1`,
+            [userID]
+        )
+    }
+    
 }
 
 module.exports = new UsersModel()

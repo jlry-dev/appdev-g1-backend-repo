@@ -1,0 +1,19 @@
+meta {
+  name: Get All Favorite Movies
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}movies/favourites
+  body: none
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}

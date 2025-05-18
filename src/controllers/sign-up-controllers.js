@@ -6,22 +6,24 @@ require('dotenv').config()
 
 const pendingRegModel = require('../models/pending-regesiter-model')
 const usersModel = require('../models/users-model')
+
 const ConflictError = require('../errors/conflict-error')
 const BadRequestError = require('../errors/bad-request-error')
-const emailSender = require('../lib/email-sender')
+const NotFoundError = require('../errors/not-found-error')
+
+const {emailVerificationSender} = require('../lib/email-sender')
 
 class SignUpController {
     postSignUp = asyncHandler(async (req, res) => {
         const validationErrs = validationResult(req).errors
 
         if (validationErrs.length > 0) {
-            console.log(validationErrs)
             // return 400 if missing shiz or invalid
             throw new BadRequestError('Data sent is invalid')
         }
 
         // parse data
-        const { email, username, password } = req.body
+        const { email, username, bdate, password } = req.body
 
         const isPending = await pendingRegModel.checkPending(email, username)
         const isRegistered = await usersModel.checkUser(email, username)
@@ -48,13 +50,14 @@ class SignUpController {
         await pendingRegModel.insertUser(
             email,
             username,
+            bdate,
             hashedPassword,
             token,
             expiration
         )
 
         // Send verification email
-        await emailSender(email, username, token, expiration)
+        await emailVerificationSender(email, username, token, expiration)
 
         // return 202 OK
         res.status(202)
@@ -63,6 +66,36 @@ class SignUpController {
                 'Registration pending. Check your email for the verification link',
             status: 'pending',
             email: email,
+        })
+    })
+
+    verifyTokenByQuery = asyncHandler(async (req, res) => {
+        const token = req.query.token
+
+        const isPending = await pendingRegModel.checkPendingByToken(token)
+
+        // Token is invalid or not found in pending.
+        if (!isPending) {
+            throw new BadRequestError('Token is invalid or expired.')
+        }
+
+        // Move user
+
+        const user = await pendingRegModel.retrieveUserByToken(token)
+
+        // These cases where the token was verified, then another process removed the user from the database.
+        if (typeof user === 'undefined') {
+            throw new NotFoundError('Token was valid, user not found.')
+        }
+
+        await usersModel.insertUser(user.email, user.username, user.bdate, user.password)
+        await pendingRegModel.deleteUserByToken(token)
+
+        res.status(200)
+        res.json({
+            message: 'User email verified, registration completed',
+            status: 'verified',
+            email: user.email,
         })
     })
 }
