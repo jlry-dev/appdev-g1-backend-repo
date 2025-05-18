@@ -1,0 +1,84 @@
+meta {
+  name: Favorites Error Cases
+  type: http
+  seq: 5
+}
+
+# Test 1: Add favorite without movie_id
+post {
+  url: {{base_url}}/movies/favorite/add
+  body: json {
+  }
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+tests {
+  test("Status code is 400") {
+    expect(response.status).toBe(400)
+  }
+  
+  test("Error message for missing movie_id") {
+    expect(response.body.message).toBe("Movie ID is required")
+  }
+}
+
+# Test 2: Remove non-existent favorite
+post {
+  url: {{base_url}}/movies/favorite/remove
+  body: json {
+    "movie_id": "999999"
+  }
+  auth: bearer
+}
+
+tests {
+  test("Status code is 404") {
+    expect(response.status).toBe(404)
+  }
+  
+  test("Error message for non-existent favorite") {
+    expect(response.body.message).toBe("Movie not found in favorites")
+  }
+}
+
+# Test 3: Check favorite without authentication
+get {
+  url: {{base_url}}/movies/favorite/check/123
+}
+
+tests {
+  test("Status code is 401") {
+    expect(response.status).toBe(401)
+  }
+  
+  test("Error message for unauthorized access") {
+    expect(response.body.message).toBe("Unauthorized")
+  }
+}
+
+# Test 4: Add duplicate favorite
+post {
+  url: {{base_url}}/movies/favorite/add
+  body: json {
+    "movie_id": "123"
+  }
+  auth: bearer
+}
+
+tests {
+  test("Status code is 409") {
+    expect(response.status).toBe(409)
+  }
+  
+  test("Error message for duplicate favorite") {
+    expect(response.body.message).toBe("Movie already in favorites")
+  }
+} 

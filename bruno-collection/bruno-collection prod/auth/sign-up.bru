@@ -1,0 +1,21 @@
+meta {
+  name: Sign Up
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{host}}/sign-up
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "testuser",
+    "email": "villarente.sofiabelle027@gmail.com",
+    "password": "password123",
+    "confirm-password": "password123",
+    "bdate": "2004-08-20"
+  }
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Remove Movie from Favourites
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{host}}/movies/favourites/remove
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "movie_id": 123
+  }
+}

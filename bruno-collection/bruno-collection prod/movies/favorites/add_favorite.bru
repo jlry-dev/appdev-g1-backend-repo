@@ -1,0 +1,35 @@
+meta {
+  name: Add Movie to Favorites
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/movies/favorite/add
+  body: json {
+    "movie_id": "123"
+  }
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{auth_token}}
+}
+
+tests {
+  test("Status code is 202") {
+    expect(response.status).toBe(202)
+  }
+  
+  test("Response has success message") {
+    expect(response.body.message).toBe("Movie added to favorites successfully")
+  }
+  
+  test("Response has correct status") {
+    expect(response.body.status).toBe("added")
+  }
+} 

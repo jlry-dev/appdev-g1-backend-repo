@@ -1,0 +1,23 @@
+meta {
+  name: Update Account Info
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/account/info/update
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ token }}
+}
+
+body:json {
+  {
+    "username": "newusername",
+    "email": "newemail@example.com",
+    "bdate": "2008-01-01"
+  }
+}
