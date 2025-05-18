@@ -25,26 +25,27 @@ class MoviesController {
             throw new BadRequestError('Query invalid.')
         }
 
-        // TO DO: add a check for age.
+        // Handle "Science Fiction" special case
+        const searchGenre = genre === 'Science-fiction' ? 'Science Fiction' : genre;
 
         let genreID 
         genreJSON.forEach((g) => {
-            if (g.name == genre){
+            if (g.name === searchGenre){
                 genreID = g.id
             }
         })
-
 
         // genre not found
         if (!genreID){
             throw new NotFoundError('Genre not found.')
         }
         
-        const data = await fetch(`${process.env.MOVIEDB_BASE_URL}discover/movie?with_genres${encodeURIComponent(genreID)}&page=${encodeURIComponent(page ? page : 1)}`, 
+        console.log(`Fetching movies for genre: ${searchGenre} (ID: ${genreID})`);
+        const data = await fetch(`${process.env.MOVIEDB_BASE_URL}discover/movie?with_genres=${genreID}&page=${page ? page : 1}`, 
                                     options)
         const json = await data.json()
 
-        if (json["results"].length === 0) {
+        if (!json["results"] || json["results"].length === 0) {
             throw new NotFoundError('No movies found.')
         }
 
@@ -60,7 +61,6 @@ class MoviesController {
         res.json({
             result
         })
-    })
 
     getMovieDetails = asyncHandler(async function(req, res) {
         const movieID = req.params["id"]
