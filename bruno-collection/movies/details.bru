@@ -6,5 +6,10 @@ meta {
 
 get {
   url: http://localhost:3000/movies/details/123
+  body: none
   auth: bearer
-} 
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Add Movie in Favourites
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{host}}movies/favourites/add
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {"movie_id": 123}
+}

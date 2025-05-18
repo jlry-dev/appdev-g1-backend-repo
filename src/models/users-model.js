@@ -63,9 +63,9 @@ class UsersModel {
     }
 
     // This is for updating the username, email, and date (MM-DD-YYYY)
-    async updateInfo(username, email, bdate, userID) {
-        await pool.query(`UPDATE users SET username = $1, email = $2, bdate = $3 WHERE "user_id" = $4`,
-            [username, email, bdate, userID]
+    async updateInfo(username, email, bdate, isVerified, userID) {
+        await pool.query(`UPDATE users SET username = $1, email = $2, bdate = $3, "isVerified" = $4 WHERE "user_id" = $5`,
+            [username, email, bdate, isVerified, userID]
         )
     }
 

@@ -11,7 +11,7 @@ const ConflictError = require('../errors/conflict-error')
 const BadRequestError = require('../errors/bad-request-error')
 const NotFoundError = require('../errors/not-found-error')
 
-const emailSender = require('../lib/email-sender')
+const {emailVerificationSender} = require('../lib/email-sender')
 
 class SignUpController {
     postSignUp = asyncHandler(async (req, res) => {
@@ -57,7 +57,7 @@ class SignUpController {
         )
 
         // Send verification email
-        await emailSender(email, username, token, expiration)
+        await emailVerificationSender(email, username, token, expiration)
 
         // return 202 OK
         res.status(202)

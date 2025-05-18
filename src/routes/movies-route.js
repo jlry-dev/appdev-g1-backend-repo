@@ -11,4 +11,9 @@ moviesRouter.get("/search", controller.getMoviesBySearch)
 moviesRouter.get("/collection/:genre", controller.getMoviesByGenre)
 moviesRouter.get("/details/:id", controller.getMovieDetails)
 
+// TO DO: Add validation for movieID and userID.
+moviesRouter.get("/favourites", controller.getFavorites)
+moviesRouter.post("/favourites/add", controller.postAddFavorites)
+moviesRouter.post("/favourites/remove", controller.postRemoveFavorites)
+
 module.exports = moviesRouter

@@ -20,13 +20,19 @@ class LogInController {
         const { userIdentifier, password } = req.body
 
         // The userIndetifier variable holds either a username or email of the user
-        // This ternary operation validates if it is an email, if so, will query database by email, otherwise by username.
-        const user = emailValidator.validate(userIdentifier)
+        //  it is an email, if so, will query database by email, otherwise by username.
+
+        const isEmail = emailValidator.validate(userIdentifier)
+        const user = isEmail
             ? await usersModel.retrieveUserByEmail(userIdentifier)
             : await usersModel.retrieveUserByUsername(userIdentifier)
 
         if (typeof user === 'undefined') {
-            throw new UnauthorizedError('Invalid credentials.')
+            throw new UnauthorizedError('Credentials not found.')
+        }
+
+        if (isEmail && user.is_verified === false) {
+            throw new UnauthorizedError('Email is not verified.')
         }
 
         // check if password is matched
@@ -40,8 +46,6 @@ class LogInController {
         const token = jwt.sign(
             {
                 user_id: user['user_id'],
-                username: user.username,
-                email: user.email,
             },
             process.env.JWT_SECRET,
             {

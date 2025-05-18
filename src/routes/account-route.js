@@ -12,8 +12,12 @@ accountRouter.use(verifyToken)
 accountRouter.get("/info", controller.getInfo)
 accountRouter.post("/delete", controller.postDeleteAccount)
 accountRouter.post("/info/update", validator.updateInfo, controller.postInfoUpdate)
+
 accountRouter.post("/password/update", validator.updatePassword, controller.postNewPassword)
-// accountRouter.post("password/recover", )
+accountRouter.post("password/recover", validator.validateEmail, controller.getPasswordRecover)
+// accountRouter.post("/password/recover/:token", vali)
+// accountRouter.post("/password/recover/:token")
+
 
 
 module.exports = accountRouter
