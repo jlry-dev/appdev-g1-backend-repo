@@ -170,6 +170,18 @@ class MoviesController {
             favourites: favouriteList
         })
     })
+
+    getTrendingMovies = asyncHandler(async function(req, res) {
+        const data = await fetch(`${process.env.MOVIEDB_BASE_URL}trending/movie/day`, options)
+        let json = await data.json()
+
+        res.status(202)
+        res.json({
+            id: json["id"],
+            "poster_path": json["poster_path"],
+            "title": json["original_title"]
+        })
+    })
 }
 
 // * Helper function to get movie details.
