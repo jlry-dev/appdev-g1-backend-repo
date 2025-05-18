@@ -10,6 +10,7 @@ moviesRouter.use(verifyToken)
 moviesRouter.get("/search", controller.getMoviesBySearch)
 moviesRouter.get("/collection/:genre", controller.getMoviesByGenre)
 moviesRouter.get("/details/:id", controller.getMovieDetails)
+moviesRouter.get("/trending", controller.getTrendingMovies)
 
 // TO DO: Add validation for movieID and userID.
 moviesRouter.get("/favourites", controller.getFavorites)
