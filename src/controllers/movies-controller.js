@@ -61,6 +61,7 @@ class MoviesController {
         res.json({
             result
         })
+    })
 
     getMovieDetails = asyncHandler(async function(req, res) {
         const movieID = req.params["id"]
