@@ -25,25 +25,29 @@ class MoviesController {
             throw new BadRequestError('Query invalid.')
         }
 
-        // Handle "Science Fiction" special case
-        const searchGenre = genre === 'Science-fiction' ? 'Science Fiction' : genre;
+        // TO DO: add a check for age.
 
         let genreID 
         genreJSON.forEach((g) => {
-            if (g.name === searchGenre){
+            if (g.name == genre){
                 genreID = g.id
             }
         })
+
 
         // genre not found
         if (!genreID){
             throw new NotFoundError('Genre not found.')
         }
         
-        console.log(`Fetching movies for genre: ${searchGenre} (ID: ${genreID})`);
-        const data = await fetch(`${process.env.MOVIEDB_BASE_URL}discover/movie?with_genres=${genreID}&page=${page ? page : 1}`, 
-                                    options)
+        console.log(`Fetching movies for genre ID: ${genreID}`);
+        const data = await fetch(
+            `${process.env.MOVIEDB_BASE_URL}discover/movie?with_genres=${genreID}&page=${page ? page : 1}`, 
+            options
+        )
         const json = await data.json()
+
+        console.log(`TMDB Response for genre ${genre}:`, json["results"] ? json["results"].length : 0, 'movies found');
 
         if (!json["results"] || json["results"].length === 0) {
             throw new NotFoundError('No movies found.')
