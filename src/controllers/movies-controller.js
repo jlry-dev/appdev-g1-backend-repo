@@ -180,9 +180,10 @@ class MoviesController {
         const data = await fetch(`${process.env.MOVIEDB_BASE_URL}trending/movie/day`, options)
         let json = await data.json()
         const result = json["results"].map((val) => {
-            return {
+            return  {
                 id: val["id"],
                 "poster_path": val["poster_path"],
+                "backdrop_path": val["backdrop_path"],
                 "title": val["original_title"]
             }
         })
