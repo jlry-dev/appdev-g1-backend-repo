@@ -147,6 +147,28 @@ const updatePassword = [
         .withMessage('Password does not match'),
 ]
 
+const resetPassword = [
+    body('email')
+        .trim()
+        .notEmpty()
+        .withMessage('Email must not be empty')
+        .isEmail()
+        .withMessage('Invalid email'),
+    body('new-password')
+        .trim()
+        .notEmpty()
+        .withMessage('Password must not be empty')
+        .isLength({ min: 8, max: 64 })
+        .custom((value, { req }) => {
+            if (value !== req.body["confirm-password"]) {
+                return false
+            }
+
+            return true
+        })
+        .withMessage('Password does not match'),
+]
+
 const validateEmail = [
     body('email')
         .trim()
@@ -156,4 +178,4 @@ const validateEmail = [
         .withMessage('Invalid email'),
 ]
 
-module.exports = { signUp, logIn, updateInfo, updatePassword, validateEmail }
+module.exports = { signUp, logIn, updateInfo, updatePassword, validateEmail, resetPassword }

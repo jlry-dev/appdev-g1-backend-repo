@@ -71,7 +71,7 @@ async function emailVerificationSender(receiverEmail, username, token, expiratio
     });
 
     console.log("✅ Email sent");
-
+ 
   } catch (error) {
     console.error('❌ Error sending email:', error);
     throw error;
@@ -79,7 +79,7 @@ async function emailVerificationSender(receiverEmail, username, token, expiratio
 }
 
 
-async function passwordRecoverEmailSender(receiverEmail, username, token) {
+async function passwordRecoverEmailSender(receiverEmail, recoveryCode) {
   try {
     const info = await transporter.sendMail({
       from: `"Movie Munch" <${process.env.EMAIL_USER}>`,
@@ -131,8 +131,8 @@ async function passwordRecoverEmailSender(receiverEmail, username, token) {
             </div>
             <div class="content">
               <h2> You have requested to recover your account. </h2>
-              <p><strong>Click the button below to reset your password.</strong></p>
-              <a href="${ process.env.ACCOUNT_RECOVERY_ROUTE }/${ encodeURIComponent(token) }" class="button">Reset Password</a>
+              <p><strong>You're recovery code is: </strong></p>
+              <h3><strong>${recoveryCode}</strong></h3>
             </div>
           </div>
         </body>
