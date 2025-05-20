@@ -17,7 +17,7 @@ class PasswordRecoveryModel {
     }
 
     async retrieveCodeInfo(email){
-        const rows = await pool.query("SELECT * FROM password_recovery where email = $1", [email])
+        const rows = await pool.query("SELECT * FROM password_recovery WHERE email = $1", [email])
 
         const info = rows[0]
         return info
