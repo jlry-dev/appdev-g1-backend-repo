@@ -165,16 +165,12 @@ class AccountController {
         
         let code
         const info = await passwordRecoveryModel.retrieveCodeInfo(email)
-        if (typeof info === 'undefined') {
-            throw new NotFoundError('Request not found.')
-        }
-
-        if (info.length === 0) {
+        if (typeof info !== 'undefined') {
+            code = info["code"]
+        } else {
             let code = Math.floor(100000 + Math.random() * 900000).toString();
             const expiration = new Date(Date.now() + 60 * 60 * 1000);
             await passwordRecoveryModel.insert(code, email, expiration)
-        } {
-            code = info[0]["code"]
         }
         
         await passwordRecoverEmailSender(email, code)
