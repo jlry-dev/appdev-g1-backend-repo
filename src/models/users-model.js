@@ -88,7 +88,7 @@ class UsersModel {
     }
 
     async deleteAccount(userID) {
-        await pool.query(`DELETE FROM users WHERE "user_id" = $1`,
+        await pool.query(`DELETE FROM users WHERE "user_id" = $1 CASCADE`,
             [userID]
         )
     }
