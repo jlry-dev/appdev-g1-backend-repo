@@ -7,7 +7,7 @@ require('dotenv').config()
 
 const usersModel = require('../models/users-model')
 const pendingRegModel = require('../models/pending-regesiter-model')
-const passwordRecoveryModel = require('../models/password-recovery-model')
+const passwordRecoveryModel = require('../models/password-recovery')
 
 const {passwordRecoverEmailSender} = require('../lib/email-sender')
 const BadRequestError = require('../errors/bad-request-error')
