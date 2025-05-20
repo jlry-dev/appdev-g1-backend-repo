@@ -2,7 +2,7 @@ const pool = require('../config/database')
 
 class PasswordRecoveryModel {
     async insert(code, email, expiration) {
-        await pool.query("INSERT INTO password_recovery (code, email, expiration) VALUES ($1, $2)", 
+        await pool.query("INSERT INTO password_recovery (code, email, expiration) VALUES ($1, $2, $3)", 
             [code, email, expiration])
     }
 
