@@ -15,7 +15,7 @@ accountRouter.post("/info/update", validator.updateInfo, controller.postInfoUpda
 
 accountRouter.post("/password/update", validator.updatePassword, controller.postNewPassword)
 accountRouter.post("/password/reset", validator.resetPassword, controller.postPasswordReset)
-accountRouter.post("password/reset/request", validator.validateEmail, controller.postRequestReset)
+accountRouter.post("/password/reset/request", validator.validateEmail, controller.postRequestReset)
 accountRouter.post("/password/reset/confirm", validator.validateEmail, controller.postConfirmReset)
 
 
