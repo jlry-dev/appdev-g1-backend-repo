@@ -90,18 +90,27 @@ class AccountController {
         const p1 = await pendingRegModel.retrieveUserByEmail(email)
         const p2 = await pendingRegModel.retrieveUserByUsername(username)
 
-        
-        if (typeof u1 !== 'undefined' || typeof u2 !== 'undefined' || 
-            typeof p1 !== 'undefined' || typeof p1 !== 'undefined') {
+        if (typeof u1 !== 'undefined' || u1["user_id"] !== userID) {
             throw new ConflictError(
-                'Username or email is already taken. Please choose another one.',
+                'Email is already taken. Please choose another one.',
             )
         }
 
-        if (u1["user_id"] !== userID || u2["user_id"] !== userID || 
-            p1["user_id"] !== userID || p2["user_id"] !== userID) {
+        if (typeof p1 !== 'undefined') {
             throw new ConflictError(
-                'Username or email is already taken. Please choose another one.',
+                'Email is already taken. Please choose another one.',
+            )
+        }
+
+        if (typeof u2 !== 'undefined' || u2["user_id"] !== userID) {
+            throw new ConflictError(
+                'Username is already taken. Please choose another one.',
+            )
+        }
+
+        if (typeof u2 !== 'undefined') {
+            throw new ConflictError(
+                'Username is already taken. Please choose another one.',
             )
         }
 

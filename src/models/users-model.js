@@ -69,6 +69,24 @@ class UsersModel {
         )
     }
 
+    async updateUserName(username, userID) {
+        await pool.query(`UPDATE users SET username = $1 WHERE "user_id" = $2`,
+            [username, userID]
+        )
+    }
+
+    async updateEmail(email, isVerified, userID) {
+        await pool.query(`UPDATE users SET email = $1, "isVerified" = $2 WHERE "user_id" = $3`,
+            [email, isVerified, userID]
+        )
+    }
+
+    async updateBdate(bdate, userID) {
+        await pool.query(`UPDATE users SET bdate = $1 WHERE "user_id" = $2`,
+            [bdate, userID]
+        )
+    }
+
     async deleteAccount(userID) {
         await pool.query(`DELETE FROM users WHERE "user_id" = $1`,
             [userID]
