@@ -168,7 +168,7 @@ class AccountController {
         if (typeof info !== 'undefined') {
             code = info["code"]
         } else {
-            let code = Math.floor(100000 + Math.random() * 900000).toString();
+            code = Math.floor(100000 + Math.random() * 900000).toString();
             const expiration = new Date(Date.now() + 60 * 60 * 1000);
             await passwordRecoveryModel.insert(code, email, expiration)
         }
