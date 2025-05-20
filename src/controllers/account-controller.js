@@ -202,6 +202,8 @@ class AccountController {
 
         const info = await passwordRecoveryModel.retrieveCodeInfo(email)
 
+        console.log(email, info)
+
         if (info["tries"] >= 3) {
             passwordRecoveryModel.delete(email)
             throw new BadRequestError('Too many failed attempts')

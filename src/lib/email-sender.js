@@ -84,7 +84,7 @@ async function passwordRecoverEmailSender(receiverEmail, recoveryCode) {
     const info = await transporter.sendMail({
       from: `"Movie Munch" <${process.env.EMAIL_USER}>`,
       to: receiverEmail,
-      subject: 'Movie Munch - Email Verification',
+      subject: 'Movie Munch - Password Recovery',
       html: 
       `<!DOCTYPE html>
       <html lang="en">
