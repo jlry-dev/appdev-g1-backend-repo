@@ -14,9 +14,10 @@ accountRouter.post("/delete", controller.postDeleteAccount)
 accountRouter.post("/info/update", validator.updateInfo, controller.postInfoUpdate)
 
 accountRouter.post("/password/update", validator.updatePassword, controller.postNewPassword)
-accountRouter.post("password/recover", validator.validateEmail, controller.getPasswordRecover)
-// accountRouter.post("/password/recover/:token", vali)
-// accountRouter.post("/password/recover/:token")
+accountRouter.post("/password/reset", validator.resetPassword, controller.postPasswordReset)
+accountRouter.post("password/reset/request", validator.validateEmail, controller.postRequestReset)
+accountRouter.post("/password/reset/confirm", validator.validateEmail, controller.postConfirmReset)
+
 
 
 

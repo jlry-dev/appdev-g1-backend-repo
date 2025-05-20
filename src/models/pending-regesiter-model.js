@@ -48,6 +48,28 @@ class PendingRegistrationModel {
         return user
     }
 
+    async retrieveUserByUsername(username) {
+        const { rows } = await pool.query(
+            `SELECT * FROM pending_registration WHERE username = $1`,
+            [username]
+        )
+
+        const user = rows[0]
+
+        return user
+    }
+
+    async retrieveUserByEmail(email) {
+        const { rows } = await pool.query(
+            `SELECT * FROM pending_registration WHERE email = $1`,
+            [email]
+        )
+
+        const user = rows[0]
+
+        return user
+    }
+
     async deleteUserByToken(token) {
         await pool.query(
             `DELETE FROM pending_registration WHERE verification_token = $1`,
